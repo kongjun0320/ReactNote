@@ -1,56 +1,71 @@
-import React from 'react'
+import React, { Component } from 'react'
+import { HashRouter as Router, Switch, Route, NavLink } from 'react-router-dom'
+import './css/style.css'
 
-import Home from './Home.jsx'
-import Navigate from './Navigate'
-import StateComponent from './StateComponent'
-import ComponentLife from './ComponentLife'
-import SetState from './SetState'
-import IfComponent from './IfComponent'
-import ControlComponent from './ControlComponent'
-import RefAndDom from './RefAndDom'
-import Parent from './components/Parent'
-import Compose from './compose'
+// import Home from './pages/Home'
+import Mine from './pages/Mine'
+import Child from './pages/Child'
+import Demo from './pages/Demo'
+import H1 from './pages/H1'
+import H2 from './pages/H2'
+import NotFound from './pages/NotFound'
 
-class App extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      title: 'this is title'
-    }
-  }
-  modifyTitleHandle = (param) => {
-    console.log('this is son variable = ' + param);
-    this.setState({
-      title: 'this is new title'
-    })
-  }
+export default class App extends Component {
   render() {
     return (
-      <div>
-        <Compose>
-          <h3>heh</h3>
-          <h3>xix</h3>
-          <h3>wuw</h3>
-        </Compose>
-        <hr />
-        <Parent />
-        <hr />
-        <RefAndDom />
-        <hr />
-        <ControlComponent />
-        <hr />
-        <Navigate name="heh" />
-        <Home />
-        <StateComponent />
-        <ComponentLife title={this.state.title} modifyTitleHandle={this.modifyTitleHandle} />
-        <button onClick={this.modifyTitleHandle}>modify title</button>
-        <hr />
-        <SetState />
-        <hr />
-        <IfComponent />
-      </div>
+      <Router>
+        <div>
+          <nav>
+            <ul>
+              <li>
+                <NavLink exact strict to="/h1">
+                  Home
+                </NavLink>
+              </li>
+              <li>
+                <NavLink exact strict to="/mine">
+                  Mine
+                </NavLink>
+              </li>
+              <li>
+                <NavLink exact strict to="/demo?name=kobe">
+                  Demo
+                </NavLink>
+              </li>
+              <li>
+                <NavLink exact strict to="/mine/child/123">
+                  Child
+                </NavLink>
+              </li>
+            </ul>
+          </nav>
+
+          <Switch>
+            <Mine>
+              <Switch>
+                <Route exact strict path="/mine/h1">
+                  <H1 />
+                </Route>
+                <Route exact strict path="/mine/h2">
+                  <H2 />
+                </Route>
+              </Switch>
+            </Mine>
+            <Route
+              exact
+              strict
+              path="/demo"
+              render={() => <Demo name="heh" />}
+            ></Route>
+            <Route exact strict path="/mine/child/:id?">
+              <Child />
+            </Route>
+            <Route>
+              <NotFound />
+            </Route>
+          </Switch>
+        </div>
+      </Router>
     )
   }
 }
-
-export default App
